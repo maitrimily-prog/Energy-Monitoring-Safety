@@ -128,10 +128,17 @@
       cursor: pointer; transition: all 0.3s;
       text-transform: uppercase;
     }
-    .btn-global-clear:hover {
+    .btn-global-clear:not(:disabled):hover {
       background: var(--danger);
       color: #fff;
       box-shadow: 0 0 15px rgba(255,59,92,.4);
+    }
+    .btn-global-clear:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      border-color: var(--muted);
+      color: var(--muted);
+      background: transparent;
     }
 
     .btn-toggle {
@@ -289,7 +296,7 @@
 <main>
   <div class="section-header">
     <div class="section-tag">// <span>Device</span> → 3 Active Channels</div>
-    <button class="btn-global-clear" onclick="clearAllAlerts()">⚠ Cancel All Alerts</button>
+    <button class="btn-global-clear" id="btn-clear-alerts" onclick="clearAllAlerts()" disabled>⚠ Cancel All Alerts</button>
   </div>
 
   <div class="grid">
@@ -439,7 +446,7 @@
     databaseURL: "https://energy-monitoring-and-safety-default-rtdb.asia-southeast1.firebasedatabase.app",
   };
 
-  /* DB node paths — Now includes a new RelayX field for control */
+  /* DB node paths — Includes Relay control field */
   const DEVICES = [
     { key: 'Device-1', num: 1, vField: 'Voltage1', aField: 'Current1', emField: 'Emergency1', rField: 'Relay1' },
     { key: 'Device-2', num: 2, vField: 'Voltage2', aField: 'Current2', emField: 'Emergency2', rField: 'Relay2' },
@@ -449,7 +456,7 @@
   const V_MAX = 260; 
   const A_MAX = 20;  
 
-  // Store current relay states to toggle them easily
+  // Track the current relay states to allow toggling
   let currentRelayStates = { 1: false, 2: false, 3: false };
 
   setInterval(() => {
@@ -494,7 +501,7 @@
         const v  = parseFloat(data[dev.vField]  ?? 0) || 0;
         const a  = parseFloat(data[dev.aField]  ?? 0) || 0;
         const em = parseEmergency(data[dev.emField]);
-        const r  = parseEmergency(data[dev.rField]); // Use same parse logic for boolean
+        const r  = parseEmergency(data[dev.rField]); 
 
         currentRelayStates[dev.num] = r;
 
@@ -532,7 +539,6 @@
     const card  = document.getElementById(`card-${n}`);
     const txt   = document.getElementById(`em-text-${n}`);
 
-    // Update Emergency UI
     if (em) {
       badge.className = 'em-badge on';
       txt.textContent = 'EMERGENCY';
@@ -543,7 +549,6 @@
       card.classList.remove('em-on');
     }
 
-    // Update Relay Button UI
     if (relayOn) {
       btn.className = 'btn-toggle pwr-on';
       btn.textContent = 'PWR: ON';
@@ -580,10 +585,16 @@
     const emEl = document.getElementById('sum-em');
     emEl.textContent = emCount;
     emEl.style.color = emCount > 0 ? 'var(--danger)' : 'var(--safe)';
+
+    // NEW: Enable/Disable the global cancel button based on active emergencies
+    const clearBtn = document.getElementById('btn-clear-alerts');
+    if (emCount > 0) {
+      clearBtn.disabled = false;
+    } else {
+      clearBtn.disabled = true;
+    }
   }
 
-  /* ─── NEW: Write Commands to Firebase ─── */
-  
   // Toggle individual device relay
   function toggleRelay(n) {
     const db = firebase.database();
@@ -593,7 +604,6 @@
     // Flip the current state
     const newState = !currentRelayStates[n]; 
     
-    // Create an update object for Firebase
     let updates = {};
     updates[`Device/${dev.key}/${dev.rField}`] = newState;
 
@@ -608,10 +618,9 @@
     const db = firebase.database();
     let updates = {};
 
-    // For every device, set Emergency to false, and optionally turn relays back ON
     DEVICES.forEach(dev => {
       updates[`Device/${dev.key}/${dev.emField}`] = false;
-      updates[`Device/${dev.key}/${dev.rField}`] = true; // Turn power back on after reset
+      updates[`Device/${dev.key}/${dev.rField}`] = true; // Automatically turn relays back ON
     });
 
     db.ref().update(updates).then(() => {
