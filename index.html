@@ -586,7 +586,8 @@
   let currentRelayStates = { 1: null, 2: null, 3: null };
   let dbConnected   = false;
   let espOnline     = false;
-  let heartbeatTimer = null;
+  let heartbeatTimer  = null;
+  let lastHeartbeatTs = 0;
 
   /* ─── Clock ─── */
   setInterval(() => {
@@ -661,19 +662,30 @@
       updateConnectionUI();
     });
 
+    // Timestamp-age approach:
+    // Instead of relying on the listener firing at exactly the right moment
+    // (which breaks on Firebase reconnects), we store the last known timestamp
+    // and poll its age every 3 s. ESP is considered online if the timestamp
+    // is less than 15 s old. This survives page reconnects and cached values.
+
     db.ref('Device/heartbeat').on('value', snap => {
       if (!dbConnected) return;
-      espOnline = true;
-      updateConnectionUI();
-      clearTimeout(heartbeatTimer);
-      // Timeout must be > (EMON_TIMEOUT_MS × 3 channels + Firebase RTT).
-      // ESP worst-case loop: 3 × 1000 ms sensors + ~1000 ms Firebase = ~4000 ms.
-      // We use 10 000 ms for a comfortable margin.
-      heartbeatTimer = setTimeout(() => {
-        espOnline = false;
-        updateConnectionUI();
-      }, 10000);
+      const ts = snap.val();
+      if (ts && typeof ts === 'number') lastHeartbeatTs = ts;
     });
+
+    // Poll heartbeat age every 3 seconds
+    clearInterval(heartbeatTimer);
+    heartbeatTimer = setInterval(() => {
+      if (!dbConnected) return;
+      if (lastHeartbeatTs === 0) return; // not yet received
+      const ageMs = Date.now() - lastHeartbeatTs;
+      const online = ageMs < 15000;
+      if (online !== espOnline) {
+        espOnline = online;
+        updateConnectionUI();
+      }
+    }, 3000);
 
     DEVICES.forEach(dev => {
       db.ref(`Device/${dev.key}`).on('value', snap => {
