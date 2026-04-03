@@ -658,9 +658,14 @@
     const db = firebase.database();
 
     db.ref('.info/connected').on('value', snap => {
-      dbConnected = !!snap.val();
-      updateConnectionUI();
-    });
+  dbConnected = !!snap.val();
+  updateConnectionUI();
+  if (dbConnected && lastHeartbeatTs > 0) {    // ← add these 4 lines
+    const ageMs = Date.now() - lastHeartbeatTs;
+    espOnline = ageMs < 15000;
+    updateConnectionUI();
+  }
+});
 
     // Timestamp-age approach:
     // Instead of relying on the listener firing at exactly the right moment
@@ -668,24 +673,23 @@
     // and poll its age every 3 s. ESP is considered online if the timestamp
     // is less than 15 s old. This survives page reconnects and cached values.
 
-    db.ref('Device/heartbeat').on('value', snap => {
-      if (!dbConnected) return;
-      const ts = snap.val();
-      if (ts && typeof ts === 'number') lastHeartbeatTs = ts;
-    });
+   db.ref('Device/heartbeat').on('value', snap => {
+   const ts = snap.val();
+   if (ts && typeof ts === 'number') lastHeartbeatTs = ts;
+   // updateConnectionUI will re-evaluate on the next 3-s timer tick
+   });
 
     // Poll heartbeat age every 3 seconds
     clearInterval(heartbeatTimer);
-    heartbeatTimer = setInterval(() => {
-      if (!dbConnected) return;
-      if (lastHeartbeatTs === 0) return; // not yet received
-      const ageMs = Date.now() - lastHeartbeatTs;
-      const online = ageMs < 15000;
-      if (online !== espOnline) {
-        espOnline = online;
-        updateConnectionUI();
-      }
-    }, 3000);
+   heartbeatTimer = setInterval(() => {
+  if (lastHeartbeatTs === 0) return;          // ← removed dbConnected guard
+  const ageMs = Date.now() - lastHeartbeatTs;
+  const online = dbConnected && ageMs < 15000; // ← dbConnected used here instead
+  if (online !== espOnline) {
+    espOnline = online;
+    updateConnectionUI();
+  }
+}, 3000);
 
     DEVICES.forEach(dev => {
       db.ref(`Device/${dev.key}`).on('value', snap => {
