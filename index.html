@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Energy Monitor — ESP32 Dashboard</title>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;500;600;800&display=swap" rel="stylesheet"/>
 
@@ -489,10 +486,22 @@
   </div>
 </main>
 
+<!--
+  FIX 1: Load Firebase scripts as regular blocking scripts (no defer/async).
+          They must be fully parsed before any app code runs.
+  FIX 2: Auth compat SDK added so signInAnonymously() is available.
+-->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
 <script>
+  /* ─── Config ─── */
   const FIREBASE_CONFIG = {
     apiKey:      "AIzaSyCRmRyXQjNDPPTSjPjCTQcanGm183rW9dw",
     databaseURL: "https://energy-monitoring-and-safety-default-rtdb.asia-southeast1.firebasedatabase.app",
+    // FIX 3: authDomain is required for Auth to initialise correctly
+    authDomain:  "energy-monitoring-and-safety.firebaseapp.com",
   };
 
   const DEVICES = [
@@ -504,20 +513,6 @@
   const V_MAX = 260;
   const A_MAX = 20;
 
-  /*
-   * OFFLINE WATCHDOG — mirrors the sample's pattern exactly:
-   *
-   *   offlineTimer starts immediately on page load.
-   *   Every heartbeat that arrives calls markOnline() which
-   *   clears + restarts the timer.
-   *   If OFFLINE_TIMEOUT_MS elapses with no heartbeat → markOffline().
-   *
-   *   ESP32 heartbeat cadence = 2 s  →  timeout = 8 s absorbs
-   *   a few missed beats before declaring the device offline.
-   *
-   *   Gone: lastHeartbeatTs, polling setInterval, dbConnected flag,
-   *   age calculations, race between .info/connected and heartbeat.
-   */
   const OFFLINE_TIMEOUT_MS = 8000;
   let   offlineTimer        = null;
   let   espOnline           = false;
@@ -539,7 +534,6 @@
         document.getElementById(`load-btn-${n}`).disabled = false;
       }
     }
-    // Always reset the countdown regardless of previous state
     clearTimeout(offlineTimer);
     offlineTimer = setTimeout(markOffline, OFFLINE_TIMEOUT_MS);
   }
@@ -577,16 +571,42 @@
     document.getElementById('connLabel').textContent = label;
   }
 
-  /* ─── Init ─── */
-  window.addEventListener('DOMContentLoaded', () => {
+  /* ─── Init ─────────────────────────────────────────────────────────────
+   *
+   *  FIX 4: Scripts are now at the bottom of <body>, so the DOM is already
+   *          ready when this code runs — no DOMContentLoaded wrapper needed.
+   *
+   *  FIX 5: Anonymous sign-in is performed BEFORE attaching DB listeners.
+   *          Firebase RTDB rules that require auth=true will now accept the
+   *          connection.  If your rules allow unauthenticated reads/writes
+   *          this is still harmless and good practice.
+   *
+   * ────────────────────────────────────────────────────────────────────── */
+  (function init() {
     try {
       firebase.initializeApp(FIREBASE_CONFIG);
-      startListeners();
     } catch (e) {
-      setConnPill('offline', 'ERROR');
-      console.error('Firebase init failed:', e);
+      setConnPill('offline', 'INIT ERROR');
+      console.error('Firebase initializeApp failed:', e);
+      return;
     }
-  });
+
+    const auth = firebase.auth();
+
+    // Sign in anonymously, then start listeners.
+    // If auth is not enabled in the Firebase console the catch() will
+    // still call startListeners() so the DB attempt is made anyway.
+    auth.signInAnonymously()
+      .then(() => {
+        console.log('Anonymous auth OK, uid:', auth.currentUser.uid);
+        startListeners();
+      })
+      .catch(err => {
+        // Auth may be disabled in the console — log but still try the DB.
+        console.warn('Anonymous auth failed (rules may still allow access):', err.code, err.message);
+        startListeners();
+      });
+  })();
 
   /* ─── Firebase listeners ─── */
   function startListeners() {
