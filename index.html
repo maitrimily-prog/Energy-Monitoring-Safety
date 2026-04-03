@@ -47,7 +47,6 @@
       z-index: 0;
     }
 
-    /* ─── Header ─── */
     header {
       position: relative; z-index: 1;
       display: flex; align-items: center; justify-content: space-between;
@@ -80,12 +79,10 @@
 
     .conn-pill {
       display: flex; align-items: center; gap: 7px;
-      padding: 5px 13px;
-      border-radius: 20px;
+      padding: 5px 13px; border-radius: 20px;
       font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px;
       transition: all .4s;
     }
-
     .conn-pill.connecting { border: 1px solid rgba(240,180,41,.3); color: var(--amber); }
     .conn-pill.live       { border: 1px solid rgba(13,255,140,.3); color: var(--safe); }
     .conn-pill.offline    { border: 1px solid rgba(255,59,92,.3);  color: var(--danger); }
@@ -98,7 +95,6 @@
 
     .clock { font-family: var(--font-mono); font-size: 13px; color: var(--muted); letter-spacing: 2px; }
 
-    /* ─── Main ─── */
     main {
       position: relative; z-index: 1;
       max-width: 1300px; margin: 0 auto;
@@ -116,7 +112,6 @@
     }
     .section-tag span { color: var(--accent); }
 
-    /* ─── Global Clear Button ─── */
     .btn-global-clear {
       background: rgba(255,59,92,.1);
       border: 1px solid rgba(255,59,92,.4);
@@ -137,7 +132,6 @@
       background: transparent;
     }
 
-    /* ─── Load Toggle Button ─── */
     .load-toggle-wrap {
       padding: 14px 20px;
       background: rgba(0,0,0,.2);
@@ -153,28 +147,24 @@
 
     .load-toggle-btn {
       display: flex; align-items: center; gap: 10px;
-      padding: 0;
-      background: none; border: none; cursor: pointer;
+      padding: 0; background: none; border: none; cursor: pointer;
       transition: all 0.2s;
     }
     .load-toggle-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
     .toggle-track {
       position: relative;
-      width: 56px; height: 26px;
-      border-radius: 13px;
+      width: 56px; height: 26px; border-radius: 13px;
       border: 1px solid var(--border);
       background: rgba(0,0,0,.4);
       transition: all .35s;
     }
     .toggle-track.is-on {
-      background: rgba(13,255,140,.12);
-      border-color: rgba(13,255,140,.5);
+      background: rgba(13,255,140,.12); border-color: rgba(13,255,140,.5);
       box-shadow: 0 0 10px rgba(13,255,140,.2), inset 0 0 10px rgba(13,255,140,.08);
     }
     .toggle-track.is-off {
-      background: rgba(255,59,92,.08);
-      border-color: rgba(255,59,92,.4);
+      background: rgba(255,59,92,.08); border-color: rgba(255,59,92,.4);
       box-shadow: 0 0 8px rgba(255,59,92,.15), inset 0 0 8px rgba(255,59,92,.05);
     }
 
@@ -190,14 +180,12 @@
 
     .toggle-state-label {
       font-family: var(--font-mono); font-size: 13px; font-weight: bold;
-      letter-spacing: 2px; min-width: 28px;
-      transition: color .3s;
+      letter-spacing: 2px; min-width: 28px; transition: color .3s;
     }
-    .toggle-state-label.is-on  { color: var(--safe); }
-    .toggle-state-label.is-off { color: var(--danger); }
+    .toggle-state-label.is-on      { color: var(--safe); }
+    .toggle-state-label.is-off     { color: var(--danger); }
     .toggle-state-label.is-unknown { color: var(--muted); }
 
-    /* ─── Grid & Cards ─── */
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-bottom: 40px; }
 
     .card {
@@ -258,14 +246,11 @@
 
     .em-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
-    /* ─── Metrics ─── */
     .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
-
     .metric { background: var(--panel); padding: 26px 22px 20px; display: flex; flex-direction: column; }
 
     .m-label { font-size: 10px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; }
     .m-value { font-family: var(--font-mono); font-size: 46px; line-height: 1; transition: color .3s; }
-
     .m-value.v       { color: var(--accent); text-shadow: 0 0 20px rgba(0,212,255,.4); }
     .m-value.a       { color: var(--amber);  text-shadow: 0 0 20px rgba(240,180,41,.35); }
     .m-value.loading { color: var(--border) !important; text-shadow: none !important; animation: skeletonPulse 1.4s ease-in-out infinite; }
@@ -279,29 +264,20 @@
     .m-bar.v { background: var(--accent); box-shadow: 0 0 8px rgba(0,212,255,.5); }
     .m-bar.a { background: var(--amber); }
 
-    /* ─── Power + Energy Row ─── */
     .power-row {
       background: var(--panel2); border-top: 1px solid var(--border);
       display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
       background-color: var(--border);
     }
 
-    .pwr-cell {
-      background: var(--panel2); padding: 12px 22px;
-      display: flex; flex-direction: column; gap: 3px;
-    }
+    .pwr-cell { background: var(--panel2); padding: 12px 22px; display: flex; flex-direction: column; gap: 3px; }
 
     .power-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 2px; }
     .power-value { font-family: var(--font-mono); font-size: 16px; color: #e0eff8; }
 
     .ec-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 2px; }
-    .ec-value  {
-      font-family: var(--font-mono); font-size: 16px;
-      color: #c8aaff;
-      text-shadow: 0 0 12px rgba(200,170,255,.3);
-    }
+    .ec-value  { font-family: var(--font-mono); font-size: 16px; color: #c8aaff; text-shadow: 0 0 12px rgba(200,170,255,.3); }
 
-    /* ─── Card Footer ─── */
     .card-foot {
       padding: 10px 22px; display: flex; align-items: center; justify-content: space-between;
       border-top: 1px solid rgba(22,36,54,.8);
@@ -316,7 +292,6 @@
     .signal span:nth-child(3) { height: 9px; }
     .signal span:nth-child(4) { height: 12px; }
 
-    /* ─── Summary ─── */
     .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
     .s-tile { background: var(--panel); border: 1px solid var(--border); border-radius: 4px; padding: 22px 24px; }
     .s-label { font-size: 10px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
@@ -361,7 +336,7 @@
 
   <div class="grid">
 
-    <!-- ── Card 1 ── -->
+    <!-- Card 1 -->
     <div class="card" id="card-1">
       <div class="card-head">
         <div class="device-id">
@@ -369,10 +344,7 @@
           <div class="dev-name">Device-1</div>
         </div>
         <div class="status-group">
-          <div class="em-badge off" id="em-1">
-            <div class="em-dot"></div>
-            <span id="em-text-1">NORMAL</span>
-          </div>
+          <div class="em-badge off" id="em-1"><div class="em-dot"></div><span id="em-text-1">NORMAL</span></div>
         </div>
       </div>
       <div class="metrics">
@@ -390,21 +362,13 @@
         </div>
       </div>
       <div class="power-row">
-        <div class="pwr-cell">
-          <div class="power-label">POWER (W)</div>
-          <div class="power-value" id="p-1">— W</div>
-        </div>
-        <div class="pwr-cell">
-          <div class="ec-label">ENERGY CONSUMED</div>
-          <div class="ec-value" id="ec-1">— kWh</div>
-        </div>
+        <div class="pwr-cell"><div class="power-label">POWER (W)</div><div class="power-value" id="p-1">— W</div></div>
+        <div class="pwr-cell"><div class="ec-label">ENERGY CONSUMED</div><div class="ec-value" id="ec-1">— kWh</div></div>
       </div>
       <div class="load-toggle-wrap">
         <div class="load-toggle-label">LOAD CONTROL</div>
         <button class="load-toggle-btn" id="load-btn-1" onclick="toggleLoad(1)" disabled>
-          <div class="toggle-track" id="track-1">
-            <div class="toggle-thumb" id="thumb-1"></div>
-          </div>
+          <div class="toggle-track" id="track-1"><div class="toggle-thumb" id="thumb-1"></div></div>
           <span class="toggle-state-label is-unknown" id="load-label-1">—</span>
         </button>
       </div>
@@ -414,7 +378,7 @@
       </div>
     </div>
 
-    <!-- ── Card 2 ── -->
+    <!-- Card 2 -->
     <div class="card" id="card-2">
       <div class="card-head">
         <div class="device-id">
@@ -422,10 +386,7 @@
           <div class="dev-name">Device-2</div>
         </div>
         <div class="status-group">
-          <div class="em-badge off" id="em-2">
-            <div class="em-dot"></div>
-            <span id="em-text-2">NORMAL</span>
-          </div>
+          <div class="em-badge off" id="em-2"><div class="em-dot"></div><span id="em-text-2">NORMAL</span></div>
         </div>
       </div>
       <div class="metrics">
@@ -443,21 +404,13 @@
         </div>
       </div>
       <div class="power-row">
-        <div class="pwr-cell">
-          <div class="power-label">POWER (W)</div>
-          <div class="power-value" id="p-2">— W</div>
-        </div>
-        <div class="pwr-cell">
-          <div class="ec-label">ENERGY CONSUMED</div>
-          <div class="ec-value" id="ec-2">— kWh</div>
-        </div>
+        <div class="pwr-cell"><div class="power-label">POWER (W)</div><div class="power-value" id="p-2">— W</div></div>
+        <div class="pwr-cell"><div class="ec-label">ENERGY CONSUMED</div><div class="ec-value" id="ec-2">— kWh</div></div>
       </div>
       <div class="load-toggle-wrap">
         <div class="load-toggle-label">LOAD CONTROL</div>
         <button class="load-toggle-btn" id="load-btn-2" onclick="toggleLoad(2)" disabled>
-          <div class="toggle-track" id="track-2">
-            <div class="toggle-thumb" id="thumb-2"></div>
-          </div>
+          <div class="toggle-track" id="track-2"><div class="toggle-thumb" id="thumb-2"></div></div>
           <span class="toggle-state-label is-unknown" id="load-label-2">—</span>
         </button>
       </div>
@@ -467,7 +420,7 @@
       </div>
     </div>
 
-    <!-- ── Card 3 ── -->
+    <!-- Card 3 -->
     <div class="card" id="card-3">
       <div class="card-head">
         <div class="device-id">
@@ -475,10 +428,7 @@
           <div class="dev-name">Device-3</div>
         </div>
         <div class="status-group">
-          <div class="em-badge off" id="em-3">
-            <div class="em-dot"></div>
-            <span id="em-text-3">NORMAL</span>
-          </div>
+          <div class="em-badge off" id="em-3"><div class="em-dot"></div><span id="em-text-3">NORMAL</span></div>
         </div>
       </div>
       <div class="metrics">
@@ -496,21 +446,13 @@
         </div>
       </div>
       <div class="power-row">
-        <div class="pwr-cell">
-          <div class="power-label">POWER (W)</div>
-          <div class="power-value" id="p-3">— W</div>
-        </div>
-        <div class="pwr-cell">
-          <div class="ec-label">ENERGY CONSUMED</div>
-          <div class="ec-value" id="ec-3">— kWh</div>
-        </div>
+        <div class="pwr-cell"><div class="power-label">POWER (W)</div><div class="power-value" id="p-3">— W</div></div>
+        <div class="pwr-cell"><div class="ec-label">ENERGY CONSUMED</div><div class="ec-value" id="ec-3">— kWh</div></div>
       </div>
       <div class="load-toggle-wrap">
         <div class="load-toggle-label">LOAD CONTROL</div>
         <button class="load-toggle-btn" id="load-btn-3" onclick="toggleLoad(3)" disabled>
-          <div class="toggle-track" id="track-3">
-            <div class="toggle-thumb" id="thumb-3"></div>
-          </div>
+          <div class="toggle-track" id="track-3"><div class="toggle-thumb" id="thumb-3"></div></div>
           <span class="toggle-state-label is-unknown" id="load-label-3">—</span>
         </button>
       </div>
@@ -562,12 +504,25 @@
   const V_MAX = 260;
   const A_MAX = 20;
 
+  /*
+   * OFFLINE WATCHDOG — mirrors the sample's pattern exactly:
+   *
+   *   offlineTimer starts immediately on page load.
+   *   Every heartbeat that arrives calls markOnline() which
+   *   clears + restarts the timer.
+   *   If OFFLINE_TIMEOUT_MS elapses with no heartbeat → markOffline().
+   *
+   *   ESP32 heartbeat cadence = 2 s  →  timeout = 8 s absorbs
+   *   a few missed beats before declaring the device offline.
+   *
+   *   Gone: lastHeartbeatTs, polling setInterval, dbConnected flag,
+   *   age calculations, race between .info/connected and heartbeat.
+   */
+  const OFFLINE_TIMEOUT_MS = 8000;
+  let   offlineTimer        = null;
+  let   espOnline           = false;
+
   let currentRelayStates = { 1: null, 2: null, 3: null };
-  let dbConnected        = false;
-  let espOnline          = false;
-  let heartbeatTimer     = null;
-  let lastHeartbeatTs    = 0;
-  const lastSnap         = {};   // cache: num → snapshot, replayed when espOnline flips true
 
   /* ─── Clock ─── */
   setInterval(() => {
@@ -575,39 +530,25 @@
       new Date().toLocaleTimeString('en-US', { hour12: false });
   }, 1000);
 
-  /* ─── Init ─── */
-  window.addEventListener('DOMContentLoaded', () => {
-    try {
-      firebase.initializeApp(FIREBASE_CONFIG);
-      startListeners();
-    } catch (e) {
-      setConnPill('offline', 'ERROR');
-      console.error('Firebase init failed:', e);
-    }
-  });
-
-  /* ─── Connection pill ─── */
-  function setConnPill(state, label) {
-    document.getElementById('connPill').className = 'conn-pill ' + state;
-    document.getElementById('connLabel').textContent = label;
-  }
-
-  function updateConnectionUI() {
-    if (!dbConnected) {
-      setConnPill('connecting', 'DB DISCONNECTED');
-      setAllDashboardsOffline();
-    } else if (!espOnline) {
-      setConnPill('offline', 'ESP OFFLINE');
-      setAllDashboardsOffline();
-    } else {
+  /* ─── Watchdog: mark online ─── */
+  function markOnline() {
+    if (!espOnline) {
+      espOnline = true;
       setConnPill('live', 'ESP LIVE');
       for (let n = 1; n <= 3; n++) {
         document.getElementById(`load-btn-${n}`).disabled = false;
       }
     }
+    // Always reset the countdown regardless of previous state
+    clearTimeout(offlineTimer);
+    offlineTimer = setTimeout(markOffline, OFFLINE_TIMEOUT_MS);
   }
 
-  function setAllDashboardsOffline() {
+  /* ─── Watchdog: mark offline ─── */
+  function markOffline() {
+    espOnline = false;
+    setConnPill('offline', 'ESP OFFLINE');
+
     for (let n = 1; n <= 3; n++) {
       document.getElementById(`v-${n}`).textContent    = '--';
       document.getElementById(`a-${n}`).textContent    = '--';
@@ -621,80 +562,65 @@
       document.getElementById(`load-btn-${n}`).disabled = true;
       setLoadToggleUI(n, null);
     }
+
     document.getElementById('sum-power').textContent = '-- W';
     document.getElementById('sum-volt').textContent  = '-- V';
     document.getElementById('sum-amp').textContent   = '-- A';
     document.getElementById('sum-em').textContent    = '--';
     document.getElementById('sum-em').style.color    = 'var(--muted)';
+    document.getElementById('btn-clear-alerts').disabled = true;
   }
+
+  /* ─── Connection pill ─── */
+  function setConnPill(state, label) {
+    document.getElementById('connPill').className = 'conn-pill ' + state;
+    document.getElementById('connLabel').textContent = label;
+  }
+
+  /* ─── Init ─── */
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      firebase.initializeApp(FIREBASE_CONFIG);
+      startListeners();
+    } catch (e) {
+      setConnPill('offline', 'ERROR');
+      console.error('Firebase init failed:', e);
+    }
+  });
 
   /* ─── Firebase listeners ─── */
   function startListeners() {
     const db = firebase.database();
 
-    /* FIX 3 — evaluate heartbeat age immediately when DB connects,
-       don't wait up to 3 s for the next timer tick               */
-    db.ref('.info/connected').on('value', snap => {
-      dbConnected = !!snap.val();
-      updateConnectionUI();
-      if (dbConnected && lastHeartbeatTs > 0) {
-        const ageMs = Date.now() - lastHeartbeatTs;
-        espOnline = ageMs < 15000;
-        updateConnectionUI();
-        if (espOnline) replaySnapshots();
-      }
-    });
+    // Start countdown immediately — handles the case where ESP is
+    // already offline when the page first loads.
+    offlineTimer = setTimeout(markOffline, OFFLINE_TIMEOUT_MS);
 
-    /* FIX 1 — never discard the first delivery of heartbeat      */
+    // Heartbeat: every fire = ESP is alive → reset the watchdog timer.
     db.ref('Device/heartbeat').on('value', snap => {
-      const ts = snap.val();
-      if (ts && typeof ts === 'number') lastHeartbeatTs = ts;
+      if (snap.val() == null) return;
+      markOnline();
     });
 
-    /* FIX 2 — timer no longer bails when dbConnected is false;
-       dbConnected is part of the online condition instead         */
-    clearInterval(heartbeatTimer);
-    heartbeatTimer = setInterval(() => {
-      if (lastHeartbeatTs === 0) return;
-      const ageMs  = Date.now() - lastHeartbeatTs;
-      const online = dbConnected && ageMs < 15000;
-      if (online !== espOnline) {
-        espOnline = online;
-        updateConnectionUI();
-        if (espOnline) replaySnapshots();
-      }
-    }, 3000);
-
+    // Device data
     DEVICES.forEach(dev => {
       db.ref(`Device/${dev.key}`).on('value', snap => {
-        lastSnap[dev.num] = { dev, snap };   // always cache latest snapshot
         if (!espOnline) return;
-        handleSnap(dev, snap);
+        const data = snap.val();
+        if (!data) return;
+
+        const v  = parseFloat(data[dev.vField])  || 0;
+        const a  = parseFloat(data[dev.aField])  || 0;
+        const pw = parseFloat(data[dev.pField])  || 0;
+        const ec = parseFloat(data[dev.ecField]);
+        const em = parseBool(data[dev.emField]);
+        const r  = parseBool(data[dev.rField]);
+
+        currentRelayStates[dev.num] = r;
+        renderCard(dev.num, v, a, pw, ec, em, r);
+        renderSummary();
       });
     });
-  }
-
-  /* Replay cached snapshots after espOnline flips true — cards
-     populate instantly without waiting for the next ESP push     */
-  function replaySnapshots() {
-    Object.values(lastSnap).forEach(({ dev, snap }) => handleSnap(dev, snap));
-  }
-
-  /* ─── Process one device snapshot ─── */
-  function handleSnap(dev, snap) {
-    const data = snap.val();
-    if (!data) return;
-
-    const v  = parseFloat(data[dev.vField])  || 0;
-    const a  = parseFloat(data[dev.aField])  || 0;
-    const pw = parseFloat(data[dev.pField])  || 0;
-    const ec = parseFloat(data[dev.ecField]);
-    const em = parseBool(data[dev.emField]);
-    const r  = parseBool(data[dev.rField]);
-
-    currentRelayStates[dev.num] = r;
-    renderCard(dev.num, v, a, pw, ec, em, r);
-    renderSummary();
   }
 
   /* ─── Helpers ─── */
@@ -782,14 +708,13 @@
       if (document.getElementById(`card-${n}`).classList.contains('em-on')) emCount++;
     }
 
-    document.getElementById('sum-power').textContent = active ? totalPow.toFixed(1) + ' W'  : '0.0 W';
-    document.getElementById('sum-volt').textContent  = active ? (totalV / active).toFixed(1) + ' V'  : '0.0 V';
-    document.getElementById('sum-amp').textContent   = active ? (totalA / active).toFixed(2) + ' A'  : '0.00 A';
+    document.getElementById('sum-power').textContent = active ? totalPow.toFixed(1) + ' W'          : '0.0 W';
+    document.getElementById('sum-volt').textContent  = active ? (totalV / active).toFixed(1) + ' V' : '0.0 V';
+    document.getElementById('sum-amp').textContent   = active ? (totalA / active).toFixed(2) + ' A' : '0.00 A';
 
     const emEl = document.getElementById('sum-em');
     emEl.textContent = emCount;
     emEl.style.color = emCount > 0 ? 'var(--danger)' : 'var(--safe)';
-
     document.getElementById('btn-clear-alerts').disabled = (emCount === 0);
   }
 
